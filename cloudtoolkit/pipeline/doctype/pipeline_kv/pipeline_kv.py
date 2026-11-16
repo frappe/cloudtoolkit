@@ -7,7 +7,7 @@ from typing import Any
 import frappe
 from frappe.model.document import Document
 
-from pipeline.pipeline.utils import deserialize_value, serialize_and_store_value
+from cloudtoolkit.pipeline.utils import deserialize_value, serialize_and_store_value
 
 
 class KVStoreInterface(abc.ABC):

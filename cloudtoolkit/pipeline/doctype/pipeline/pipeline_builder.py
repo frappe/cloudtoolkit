@@ -9,17 +9,17 @@ from typing import TYPE_CHECKING, Any, Literal, TypeVar
 import frappe
 from frappe.model.document import Document
 
-from pipeline.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued
-from pipeline.pipeline.doctype.pipeline_kv.pipeline_kv import (
+from cloudtoolkit.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued
+from cloudtoolkit.pipeline.doctype.pipeline_kv.pipeline_kv import (
 	InMemoryKVStore,
 	KVStoreInterface,
 	PipelineKVStore,
 )
-from pipeline.pipeline.doctype.pipeline_object.pipeline_object import (
+from cloudtoolkit.pipeline.doctype.pipeline_object.pipeline_object import (
 	ObjectDeserializeError,
 	ObjectPreviousSerializationFailedError,
 )
-from pipeline.pipeline.utils import (
+from cloudtoolkit.pipeline.utils import (
 	deserialize_value,
 	generate_function_signature,
 	is_func_accept_task_id,
@@ -28,8 +28,8 @@ from pipeline.pipeline.utils import (
 )
 
 if TYPE_CHECKING:
-	from pipeline.pipeline.doctype.pipeline.pipeline import Pipeline
-	from pipeline.pipeline.doctype.pipeline_task.pipeline_task import (
+	from cloudtoolkit.pipeline.doctype.pipeline.pipeline import Pipeline
+	from cloudtoolkit.pipeline.doctype.pipeline_task.pipeline_task import (
 		PipelineTask,
 	)
 

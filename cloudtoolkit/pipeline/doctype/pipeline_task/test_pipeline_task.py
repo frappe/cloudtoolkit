@@ -6,9 +6,9 @@ from unittest.mock import patch
 import frappe
 from frappe.tests import IntegrationTestCase
 
-from pipeline.pipeline.doctype.pipeline_task.pipeline_task import retry_tasks
+from cloudtoolkit.pipeline.doctype.pipeline_task.pipeline_task import retry_tasks
 
-ENQUEUE = "pipeline.pipeline.doctype.pipeline_task.pipeline_task.enqueue_task"
+ENQUEUE = "cloudtoolkit.pipeline.doctype.pipeline_task.pipeline_task.enqueue_task"
 
 
 class IntegrationTestPipelineTask(IntegrationTestCase):
@@ -20,7 +20,7 @@ class IntegrationTestPipelineTask(IntegrationTestCase):
 	def pipeline(self) -> str:
 		"""A pipeline waiting on a task. `linked_docname` is a real row, as the engine
 		resolves it before running anything."""
-		with patch("pipeline.pipeline.doctype.pipeline.pipeline.enqueue_pipeline"):
+		with patch("cloudtoolkit.pipeline.doctype.pipeline.pipeline.enqueue_pipeline"):
 			return (
 				frappe.get_doc(
 					{

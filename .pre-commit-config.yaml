@@ -8,7 +8,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        files: "pipeline.*"
+        files: "cloudtoolkit.*"
         exclude: ".*json$|.*txt$|.*csv|.*md|.*svg"
       - id: check-merge-conflict
       - id: check-ast
