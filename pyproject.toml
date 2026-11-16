@@ -1,9 +1,9 @@
 [project]
-name = "pipeline"
+name = "cloudtoolkit"
 authors = [
     { name = "Frappe", email = "developers@frappe.io"}
 ]
-description = "Durable step-by-step pipelines for Frappe documents"
+description = "Shared building blocks for Frappe Cloud apps"
 requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]

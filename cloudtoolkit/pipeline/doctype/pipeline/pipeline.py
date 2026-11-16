@@ -12,24 +12,24 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import now_datetime
 
-from pipeline.pipeline.doctype.pipeline.exceptions import (
+from cloudtoolkit.pipeline.doctype.pipeline.exceptions import (
 	PipelineFailedError,
 	PipelineFatalError,
 	PipelineRunningError,
 	PipelineTaskEnqueued,
 )
-from pipeline.pipeline.doctype.pipeline_object.pipeline_object import (
+from cloudtoolkit.pipeline.doctype.pipeline_object.pipeline_object import (
 	PipelineObject,
 )
-from pipeline.pipeline.utils import (
+from cloudtoolkit.pipeline.utils import (
 	calculate_duration,
 	deserialize_value,
 	serialize_and_store_value,
 )
 
 if TYPE_CHECKING:
-	from pipeline.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
-	from pipeline.pipeline.doctype.pipeline_step.pipeline_step import (
+	from cloudtoolkit.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
+	from cloudtoolkit.pipeline.doctype.pipeline_step.pipeline_step import (
 		PipelineStep,
 	)
 
@@ -43,8 +43,8 @@ class Pipeline(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		from pipeline.pipeline.doctype.pipeline_kv.pipeline_kv import PipelineKV
-		from pipeline.pipeline.doctype.pipeline_step.pipeline_step import PipelineStep
+		from cloudtoolkit.pipeline.doctype.pipeline_kv.pipeline_kv import PipelineKV
+		from cloudtoolkit.pipeline.doctype.pipeline_step.pipeline_step import PipelineStep
 
 		args: DF.Data | None
 		args_type: DF.Literal["bool", "int", "float", "string", "tuple", "list", "dict", "object"]
@@ -300,7 +300,7 @@ class Pipeline(Document):
 
 def enqueue_pipeline(pipeline_name: str) -> None:
 	if frappe.flags.in_test:
-		from pipeline.pipeline.test_utils import foreground_enqueue_pipeline
+		from cloudtoolkit.pipeline.test_utils import foreground_enqueue_pipeline
 
 		foreground_enqueue_pipeline(pipeline_name)
 		return

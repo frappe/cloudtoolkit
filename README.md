@@ -1,25 +1,27 @@
-### Pipeline
+### Cloud Toolkit
 
-Durable step-by-step pipelines for Frappe documents
+Shared building blocks for Frappe Cloud apps.
 
 ### Installation
 
 You can install this app using the [Pilot](https://github.com/frappe/pilot) CLI:
 
 ```bash
-pilot -b $BENCH_NAME get-app https://github.com/frappe/pipeline --branch develop
-pilot -b $BENCH_NAME install-app $SITE_NAME pipeline
+pilot -b $BENCH_NAME get-app https://github.com/frappe/cloudtoolkit --branch develop
+pilot -b $BENCH_NAME install-app $SITE_NAME cloudtoolkit
 ```
 
-Add `required_apps = ["pipeline"]` to the hooks of an app that uses it.
+Add `required_apps = ["cloudtoolkit"]` to the hooks of an app that uses it.
 
-### Usage
+This app was named `pipeline`. Installing it on a site that has `pipeline` takes over the `Pipeline` module, so its tables and rows stay, and drops `pipeline` from the installed apps. Keep the `pipeline` checkout on the bench until every site has this app, and never run `uninstall-app pipeline`: it deletes the Pipeline tables.
+
+### Pipeline
 
 A pipeline runs the `@task` steps of a `@flow` method in background jobs. Each finished step is stored, so a retried or restarted pipeline skips the steps that already ran.
 
 ```python
-from pipeline.pipeline.doctype.pipeline.decorators import flow, task
-from pipeline.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
+from cloudtoolkit.pipeline.doctype.pipeline.decorators import flow, task
+from cloudtoolkit.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
 
 
 class DeployRequest(PipelineBuilder):
@@ -55,7 +57,7 @@ Copied from the [Press Workflow Engine](https://github.com/frappe/press/tree/dev
 This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
 
 ```bash
-cd apps/pipeline
+cd apps/cloudtoolkit
 pre-commit install
 ```
 

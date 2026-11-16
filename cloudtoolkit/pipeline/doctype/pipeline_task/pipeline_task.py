@@ -11,15 +11,15 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import now_datetime
 
-from pipeline.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued
-from pipeline.pipeline.doctype.pipeline.pipeline import enqueue_pipeline
-from pipeline.pipeline.doctype.pipeline_object.pipeline_object import (
+from cloudtoolkit.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued
+from cloudtoolkit.pipeline.doctype.pipeline.pipeline import enqueue_pipeline
+from cloudtoolkit.pipeline.doctype.pipeline_object.pipeline_object import (
 	PipelineObject,
 )
-from pipeline.pipeline.utils import calculate_duration, deserialize_value, serialize_and_store_value
+from cloudtoolkit.pipeline.utils import calculate_duration, deserialize_value, serialize_and_store_value
 
 if TYPE_CHECKING:
-	from pipeline.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
+	from cloudtoolkit.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
 
 
 class PipelineTask(Document):
@@ -224,7 +224,7 @@ def on_doctype_update():
 
 def enqueue_task(task_name: str) -> None:
 	if frappe.flags.in_test:
-		from pipeline.pipeline.test_utils import foreground_enqueue_task
+		from cloudtoolkit.pipeline.test_utils import foreground_enqueue_task
 
 		foreground_enqueue_task(task_name)
 		return

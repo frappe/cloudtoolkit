@@ -240,7 +240,7 @@ def serialize_and_store_value(
 	If the value is not JSON-serializable, it will be stored as a PipelineObject and the type will be "object".
 	"""
 
-	from pipeline.pipeline.doctype.pipeline_object.pipeline_object import PipelineObject
+	from cloudtoolkit.pipeline.doctype.pipeline_object.pipeline_object import PipelineObject
 
 	value_type = get_type_of_value(value)
 	if value_type is None:
@@ -276,7 +276,7 @@ def deserialize_value(
 
 	if value_type == "object":
 		assert serialized_value is not None
-		from pipeline.pipeline.doctype.pipeline_object.pipeline_object import (
+		from cloudtoolkit.pipeline.doctype.pipeline_object.pipeline_object import (
 			PipelineObject,
 		)
 

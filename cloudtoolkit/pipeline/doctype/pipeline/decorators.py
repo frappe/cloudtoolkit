@@ -11,8 +11,8 @@ from typing import Any, Concatenate, Generic, ParamSpec, Protocol, TypeVar, over
 import frappe
 from frappe.model.document import Document
 
-from pipeline.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
-from pipeline.pipeline.utils import (
+from cloudtoolkit.pipeline.doctype.pipeline.pipeline_builder import PipelineBuilder
+from cloudtoolkit.pipeline.utils import (
 	called_methods_in_order,
 	is_func_accept_task_id,
 	method_title,
