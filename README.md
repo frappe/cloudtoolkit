@@ -4,12 +4,11 @@ Durable step-by-step pipelines for Frappe documents
 
 ### Installation
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+You can install this app using the [Pilot](https://github.com/frappe/pilot) CLI:
 
 ```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
-bench install-app pipeline
+pilot -b $BENCH_NAME get-app https://github.com/frappe/pipeline --branch develop
+pilot -b $BENCH_NAME install-app $SITE_NAME pipeline
 ```
 
 Add `required_apps = ["pipeline"]` to the hooks of an app that uses it.
