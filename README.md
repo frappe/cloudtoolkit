@@ -1,6 +1,6 @@
 ### Cloud Toolkit
 
-Shared building blocks for Frappe Cloud apps.
+Shared building blocks for Frappe Cloud apps: durable pipelines and SSH.
 
 ### Installation
 
@@ -47,6 +47,21 @@ DeployRequest("...").deploy.run_as_pipeline()
 ```
 
 Task arguments and return values must be primitives, lists, dicts, dataclasses or Documents, because each task is identified by a hash of its arguments. A scheduler job every minute resumes pipelines and tasks a restarted worker dropped.
+
+### SSH
+
+`SSHClient` pipes a script to `bash -s` on one host, or copies files with rsync, and streams the output as it arrives. A non-zero exit raises `SSHError` unless `check=False`, and a run past its timeout raises `SSHTimeoutError`.
+
+```python
+from cloudtoolkit.ssh.client import SSHClient, read_script
+from cloudtoolkit.ssh.output_log import OutputLog
+
+client = SSHClient(machine.address, private_key=machine.get_password("ssh_private_key"))
+with OutputLog(machine, "setup_log") as log:
+	client.run(read_script("cargo", "caddy", "install.sh", environment={"CADDYFILE": caddyfile}), on_output=log.write)
+```
+
+`OutputLog` keeps the output in the cache while the command runs, publishes it on the `ssh_output` realtime event, and stores it in the field once the command ends. A form reads it with `cloudtoolkit.ssh.output_log.get_live_output`. `wait_for_server` waits until SSH accepts one of the given users, and `create_keypair` makes an ed25519 keypair.
 
 ### Credits
 
