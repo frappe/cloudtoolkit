@@ -307,3 +307,12 @@ require_type_annotated_api_methods = True
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+scheduler_events = {
+	"cron": {
+		"* * * * *": [
+			"pipeline.pipeline.doctype.pipeline.pipeline.retry_pipelines",
+			"pipeline.pipeline.doctype.pipeline.pipeline.retry_pipeline_callbacks",
+			"pipeline.pipeline.doctype.pipeline_task.pipeline_task.retry_tasks",
+		],
+	},
+}
