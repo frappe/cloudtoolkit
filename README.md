@@ -47,7 +47,9 @@ DeployRequest("...").deploy.run_as_pipeline()
 
 Task arguments and return values must be primitives, lists, dicts, dataclasses or Documents, because each task is identified by a hash of its arguments. A scheduler job every minute resumes pipelines and tasks a restarted worker dropped.
 
-The engine comes from [frappe/press](https://github.com/frappe/press).
+### Credits
+
+Copied from the [Press Workflow Engine](https://github.com/frappe/press/tree/develop/press/workflow_engine) and its [`WorkflowBuilder`](https://github.com/frappe/press/blob/develop/press/workflow_engine/doctype/press_workflow/workflow_builder.py) in [frappe/press](https://github.com/frappe/press), renamed from Press Workflow to Pipeline and from `WorkflowBuilder` to `PipelineBuilder`.
 
 ### Contributing
 
