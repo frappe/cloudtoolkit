@@ -1,6 +1,6 @@
 ### Cloud Toolkit
 
-Shared building blocks for Frappe Cloud apps: durable pipelines and SSH.
+Shared building blocks for Frappe Cloud apps: durable pipelines, SSH, and TLS certificates.
 
 ### Installation
 
@@ -21,6 +21,7 @@ This app was named `pipeline`. Installing it on a site that has `pipeline` takes
 | --- | --- |
 | [Pipeline](cloudtoolkit/pipeline/README.md) | Durable step-by-step flows on a document, run in background jobs and resumed after restarts. |
 | [SSH](cloudtoolkit/ssh/README.md) | Run scripts and rsync files over SSH, and stream the output into a document field. |
+| [TLS](cloudtoolkit/tls/README.md) | Issue Let's Encrypt certificates through the dns-01 challenge. |
 
 ### Credits
 
