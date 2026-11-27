@@ -11,11 +11,8 @@ from cloudtoolkit.pipeline.doctype.pipeline_task.pipeline_task import retry_task
 ENQUEUE = "cloudtoolkit.pipeline.doctype.pipeline_task.pipeline_task.enqueue_task"
 
 
-class IntegrationTestPipelineTask(IntegrationTestCase):
-	"""Picking up work a restarted worker dropped."""
-
-	def setUp(self):
-		frappe.set_user("Administrator")
+class PipelineTaskFixtures:
+	"""Pipeline and task rows for tests, inserted without running anything."""
 
 	def pipeline(self) -> str:
 		"""A pipeline waiting on a task. `linked_docname` is a real row, as the engine
@@ -53,6 +50,13 @@ class IntegrationTestPipelineTask(IntegrationTestCase):
 				.insert(ignore_permissions=True)
 				.name
 			)
+
+
+class IntegrationTestPipelineTask(PipelineTaskFixtures, IntegrationTestCase):
+	"""Picking up work a restarted worker dropped."""
+
+	def setUp(self):
+		frappe.set_user("Administrator")
 
 	def test_a_task_a_restarted_worker_dropped_is_enqueued_again(self):
 		"""Its job died with the worker, so nothing else will ever run it. The pipeline

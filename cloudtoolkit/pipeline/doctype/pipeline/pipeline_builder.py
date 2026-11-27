@@ -3,13 +3,15 @@
 # ruff: noqa: UP047 -- kept close to frappe/press, where this engine comes from.
 
 from collections.abc import Callable
+from datetime import datetime
 from functools import wraps
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import now_datetime, time_diff_in_seconds
 
-from cloudtoolkit.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued
+from cloudtoolkit.pipeline.doctype.pipeline.exceptions import PipelineTaskEnqueued, PipelineWaitTimeoutError
 from cloudtoolkit.pipeline.doctype.pipeline_kv.pipeline_kv import (
 	InMemoryKVStore,
 	KVStoreInterface,
@@ -216,6 +218,18 @@ class PipelineBuilder(Document):
 			self.pipeline_name,
 			self.flags.current_pipeline_task if hasattr(self.flags, "current_pipeline_task") else None,
 		)
+
+	@property
+	def step_started(self) -> datetime:
+		"""When the current task first ran. A deferred task keeps its row, so this holds across defers."""
+		task = self.flags.current_pipeline_task
+		return frappe.db.get_value("Pipeline Task", task, "creation") if task else self.creation
+
+	def wait(self, message: str, for_: int) -> None:
+		"""Try this step again later, or fail it once it has waited `for_` seconds."""
+		if time_diff_in_seconds(now_datetime(), self.step_started) > for_:
+			frappe.throw(message, PipelineWaitTimeoutError)
+		self.defer_current_task(message)
 
 	def on_trash(self) -> None:
 		"""A pipeline dynamically links back here, so it goes when the document goes."""
