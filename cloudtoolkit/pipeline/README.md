@@ -47,6 +47,7 @@ Calling `deploy()` directly runs every step inline, with no Pipeline document.
 - A task is identified by a hash of its method and arguments, so arguments must be primitives, lists, tuples, sets, dicts, dataclasses or Documents. Call `self.step.with_task_id("...")(...)` to run the same step twice with the same arguments.
 - Return values that are not JSON are pickled into a `Pipeline Object`. Keep their classes importable at the same path until the pipeline ends.
 - `defer_current_task(message)` puts the current task back in the queue, for polling until something is ready.
+- `wait(message, for_)` defers the same way, but raises `PipelineWaitTimeoutError` once the current task has waited `for_` seconds since it first ran. `step_started` is that first run.
 - `on_pipeline_success(pipeline)` or `on_pipeline_failure(pipeline)` runs on the linked document once the pipeline ends. A failing callback is retried with backoff.
 - Scheduler jobs every minute resume pipelines, tasks and callbacks that a restarted worker dropped.
 

@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import frappe
+
 
 class PipelineTaskEnqueued(Exception):
 	"""Raised when a task is enqueued and the flow needs to be paused."""
@@ -11,6 +13,10 @@ class PipelineTaskEnqueued(Exception):
 		super().__init__(message)
 		self.pipeline_name = pipeline_name
 		self.task_name = task_name
+
+
+class PipelineWaitTimeoutError(frappe.ValidationError):
+	"""Raised when a step has waited longer than it allows."""
 
 
 class PipelineRunningError(Exception):
