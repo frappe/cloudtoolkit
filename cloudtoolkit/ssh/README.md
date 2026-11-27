@@ -7,7 +7,7 @@ Run scripts on, and copy files to, remote hosts over the system `ssh` and `rsync
 `SSHClient` pipes a script to `bash -s` on one host and returns an `SSHResult` with `output` and `exit_code`.
 
 ```python
-from cloudtoolkit.ssh.client import SSHClient, SSHError, SSHTimeoutError
+from cloudtoolkit.ssh.client import SSHClient, SSHConnectionError, SSHError, SSHTimeoutError
 
 client = SSHClient(machine.address, user="root", port=22, private_key=machine.get_password("ssh_private_key"))
 result = client.run("df -h /", environment={"LANG": "C"}, timeout_seconds=60)
@@ -15,6 +15,7 @@ print(result.output)
 ```
 
 - A non-zero exit raises `SSHError` with the last 3,000 characters of output. Pass `check=False` to get the result back instead.
+- Exit 255, ssh's own failure to connect or log in, raises `SSHConnectionError`, a subclass of `SSHError`. A host still booting raises it, so callers can wait and retry. A remote command that exits 255 itself reads the same.
 - A run past `timeout_seconds` (600 by default) is killed and raises `SSHTimeoutError`.
 - `environment` is exported ahead of the script. Names must be identifiers, and values are shell-quoted.
 - `on_output` is called with each piece of output as it arrives.

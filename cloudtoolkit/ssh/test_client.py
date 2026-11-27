@@ -7,6 +7,7 @@ from frappe.tests import UnitTestCase
 
 from cloudtoolkit.ssh.client import (
 	SSHClient,
+	SSHConnectionError,
 	SSHError,
 	SSHResult,
 	SSHTimeoutError,
@@ -57,6 +58,16 @@ class TestSSHClient(UnitTestCase):
 	def test_a_failed_command_raises_with_its_output(self):
 		with self.assertRaisesRegex(SSHError, "203.0.113.1 exited 3:\n...no space left"):
 			self.run_with(SSHClient("203.0.113.1"), SSHResult("no space left", 3))
+
+	def test_a_failed_connection_raises_a_connection_error(self):
+		with self.assertRaisesRegex(SSHConnectionError, "203.0.113.1 exited 255"):
+			self.run_with(SSHClient("203.0.113.1"), SSHResult("Connection refused", 255))
+
+	def test_a_failed_command_is_not_a_connection_error(self):
+		with self.assertRaises(SSHError) as raised:
+			self.run_with(SSHClient("203.0.113.1"), SSHResult("no space left", 3))
+
+		self.assertNotIsInstance(raised.exception, SSHConnectionError)
 
 	def test_an_unchecked_failure_returns_the_result(self):
 		_fake, result = self.run_with(SSHClient("203.0.113.1"), SSHResult("", 3), check=False)

@@ -16,6 +16,7 @@ from time import monotonic, sleep
 import frappe
 
 DEFAULT_TIMEOUT_SECONDS = 600
+SSH_CONNECTION_FAILED = 255
 ERROR_TAIL_CHARACTERS = 3_000
 OPTIONS = (
 	"-o",
@@ -44,6 +45,10 @@ class SSHError(RuntimeError):
 
 class SSHTimeoutError(SSHError):
 	"""A command run over SSH outlived its timeout and was killed."""
+
+
+class SSHConnectionError(SSHError):
+	"""ssh could not reach or log in to the host, so nothing ran. A booting host raises this."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,7 +164,8 @@ class SSHClient:
 
 	def checked(self, result: SSHResult) -> SSHResult:
 		if not result.is_success:
-			raise SSHError(
+			error = SSHConnectionError if result.exit_code == SSH_CONNECTION_FAILED else SSHError
+			raise error(
 				f"{self.host} exited {result.exit_code}:\n...{result.output[-ERROR_TAIL_CHARACTERS:]}"
 			)
 
